@@ -5,7 +5,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV ANDROID_HOME /opt/android-sdk-linux
 ENV PATH $ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH
 
-# install via apt
+# Install via apt
 USER root
 
 # Install sudo
@@ -13,10 +13,17 @@ RUN apt-get update \
   && apt-get -y install sudo \
   && useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 
-RUN apt-get -y install
+# Install pip3
+RUN apt-get -y install python3-pip
+RUN pip3 install click
+
+# Setup properties common
+RUN apt-get install -y software-properties-common
 
 # Install ruby
-RUN sudo apt-get -y install ruby
+RUN sudo add-apt-repository -y ppa:brightbox/ruby-ng
+RUN sudo apt-get -y update
+RUN sudo apt-get -y install ruby2.1
 
 # Java7 installation(open jdk)
 RUN \
